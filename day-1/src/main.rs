@@ -2,43 +2,8 @@ use std::env;
 use reqwest::blocking::Client;
 use std::error::Error;
 
-#[derive(Debug)]
-struct Dial {
-    value: i32,
-    password: u32,
-}
-
-impl Dial {
-    fn rotate(&mut self, dir: char, mut clicks: i32) {
-        loop {
-            match dir {
-                'L' => self.turn_left(),
-                'R' => self.turn_right(),
-                _ => unreachable!(),
-            };
-            clicks -= 1;
-            if clicks == 0 { break };
-        }
-    }
-    fn turn_left(&mut self) {
-        if self.value == 0 {
-            self.value = 99;
-        } else {
-            self.value -= 1;
-            if self.value == 0 {
-                self.password += 1;
-            }
-        }
-    }
-    fn turn_right(&mut self) {
-        if self.value == 99 {
-            self.value = 0;
-            self.password += 1;
-        } else {
-            self.value += 1;
-        }
-    }
-}
+mod dial;
+use dial::Dial;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let input = get_input()?;
