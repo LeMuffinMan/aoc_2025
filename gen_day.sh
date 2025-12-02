@@ -23,7 +23,7 @@ fn get_input() -> Result<Vec<String>, Box<dyn Error>> {
     dotenv::from_path(\"../.env\").ok();
     let session_cookie = env::var(\"AOC_SESSION\")?;
 
-    let url = \"https://adventofcode.com/2024/day/$1/input\";
+    let url = \"https://adventofcode.com/2025/day/$1/input\";
 
     let client = Client::new();
     let response = client
