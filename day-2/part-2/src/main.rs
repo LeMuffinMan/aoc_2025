@@ -23,7 +23,6 @@ fn seek_sequence(str: &String, size: usize) -> u64 {
 fn find_invalids_ids(range: &str) -> u64 {
     let mut ret = 0;
     if let Some((low, high)) = range.split_once('-') {
-        // println!("splitted = {low} {high}");
         let num_low: u64 = low.parse().unwrap();
         let num_high: u64 = high.parse().unwrap();
         for n in num_low..=num_high {
