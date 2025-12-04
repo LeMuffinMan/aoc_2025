@@ -3,41 +3,42 @@ use std::env;
 use reqwest::blocking::Client;
 use std::error::Error;
 
-fn get_max_index(vec: &Vec<u32>, start: usize, end: usize) -> usize {
-    let mut max = 0;
-    let mut max_i = 0;
-    for i in start..end {
-        if vec[i] > max {
-            max = vec[i];
-            max_i = i
+fn get_number(bank: &Vec<u32>, indexes: (usize, usize, usize)) -> u64 {
+    let mut res: u64 = 0;
+    let first = indexes.0;
+    let second = indexes.1;
+    let third = indexes.2;
+    for (i, n) in bank.iter().enumerate() {
+        if i == first || i == second || i == third {
+            continue;
         }
+        res = res * 10;
+        res += *n as u64;
     }
-    max_i
+    res
 }
 
 fn get_max_joltage(bank: &Vec<u32>) -> u64 {
-    let mut res: u64 = 0;
-    let mut digit = 11;
     let mut max = 0;
-    for i in 0..bank.len() {
-        max = get_max_index(&bank, max, bank.len() - digit);
-        res += bank[max] as u64;
-        if digit > 0 {
-            res *= 10;
-            max = i + 1;
-            digit -= 1;
-        } else {
-            break;
+    for i in 0..bank.len() - 2 {
+        for j in i + 1..bank.len() - 1{
+            for h in j + 1..bank.len() {
+                let n = get_number(bank, (i, j, h));
+                if max < n {
+                    max = n;
+                    println!("New max = {max}");
+                }
+            }
         }
     }
-    println!("Bank = {:?} | res = {res}", bank);
-    res
+    println!("Bank = {:?} | res = {max}", bank);
+    max
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut count = 0;
     let input = get_input()?;
-    let input = vec!["987654321111111", "811111111111119", "234234234234278", "818181911112111"];
+    // let input = vec!["987654321111111", "811111111111119", "234234234234278", "818181911112111"];
     for l in input {
         let mut bank = Vec::<u32>::new();
         for c in l.chars() {
@@ -50,7 +51,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 }
 
 fn get_input() -> Result<Vec<String>, Box<dyn Error>> {
-    dotenv::from_path("../.env").ok();
+    dotenv::from_path("../../.env").ok();
     let session_cookie = env::var("AOC_SESSION")?;
 
     let url = "https://adventofcode.com/2025/day/3/input";
