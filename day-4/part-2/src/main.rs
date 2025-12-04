@@ -51,16 +51,27 @@ fn is_accessible_roll(map: &Vec<String>, x: usize, y: usize) -> Option<(usize, u
     return None;
 }
 
-fn remove_rolls(map: &mut Vec<String>, cells: & mut Vec<(usize, usize)>) -> usize {
+fn remove_rolls(map: &mut Vec<String>, cells: & mut Vec<(usize, usize)>) -> (usize, Vec<String>) {
     let mut count = 0;
-    for (x, y) in cells {
-        unsafe {
-            let line = map[*x].as_bytes_mut();
-            line[*y] = b'x';
-            count += 1;
+    let mut new_map = Vec::new();
+    for (i, line) in map.iter().enumerate() {
+        let mut new_line = String::new();
+        for (j, ch) in line.chars().enumerate() {
+            match ch {
+                '@' => {
+                    if cells.contains(&(i, j)) {
+                        new_line.push('x');
+                        count += 1;
+                    } else {
+                        new_line.push('@');
+                    }
+                },
+                _ => new_line.push(ch),
+            }
         }
+        new_map.push(new_line);
     }
-    count
+    (count, new_map)
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -100,7 +111,9 @@ fn main() -> Result<(), Box<dyn Error>> {
         if removable.is_empty() {
             break;
         }
-        count += remove_rolls(&mut input, &mut removable);
+        let (removed, new_map) = remove_rolls(&mut input, &mut removable);
+        input = new_map;
+        count += removed;
         removable.clear();
     }
     println!("Password = {count}");
