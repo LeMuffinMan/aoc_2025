@@ -36,7 +36,7 @@ fn get_adjacent_cells(map: &Vec<String>, x: usize, y: usize) -> Vec<char> {
     vec
 }
 
-fn is_accessible_roll(map: &Vec<String>, x: usize, y: usize) -> usize {
+fn is_accessible_roll(map: &Vec<String>, x: usize, y: usize) -> Option<(usize, usize)> {
     let mut roll_count = 0;
     let adjacent_cells = get_adjacent_cells(map, x, y);
     for cell in adjacent_cells {
@@ -46,15 +46,28 @@ fn is_accessible_roll(map: &Vec<String>, x: usize, y: usize) -> usize {
         }
     }
     if roll_count < 4 {
-        return 1;
+        return Some((x, y));
     }
-    return 0;
+    return None;
+}
+
+fn remove_rolls(map: &mut Vec<String>, cells: & mut Vec<(usize, usize)>) -> usize {
+    let mut count = 0;
+    for (x, y) in cells {
+        unsafe {
+            let line = map[*x].as_bytes_mut();
+            line[*y] = b'x';
+            count += 1;
+        }
+    }
+    count
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut count = 0;
-    let input = get_input()?;
-    // let input: Vec<String> = vec![
+    let mut removable = Vec::new();
+    let mut input = get_input()?;
+    // let mut input: Vec<String> = vec![
     //     "..@@.@@@@.",
     //     "@@@.@.@.@@",
     //     "@@@@@.@.@@",
@@ -69,15 +82,26 @@ fn main() -> Result<(), Box<dyn Error>> {
     //     .into_iter()
     //     .map(|s| s.to_string())
     //     .collect(); 
-    for i in 0..input.len() {
-        let line = input[i].as_bytes();
-        for j in 0..line.len() {
-            match line[j] as char {
-                '@' => count += is_accessible_roll(&input, i, j),
-                _ => continue,
-            };
+
+    loop {
+        for i in 0..input.len() {
+            let line= input[i].as_bytes();
+            for j in 0..line.len() {
+                match line[j] as char {
+                    '@' => {
+                        if let Some(cells) = is_accessible_roll(&input, i, j) {
+                            removable.push(cells);
+                        }
+                    },
+                    _ => continue,
+                };
+            }
         }
-        println!("{:?}", input[i]);
+        if removable.is_empty() {
+            break;
+        }
+        count += remove_rolls(&mut input, &mut removable);
+        removable.clear();
     }
     println!("Password = {count}");
 
@@ -85,7 +109,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 }
 
 fn get_input() -> Result<Vec<String>, Box<dyn Error>> {
-    dotenv::from_path("../.env").ok();
+    dotenv::from_path("../../.env").ok();
     let session_cookie = env::var("AOC_SESSION")?;
 
     let url = "https://adventofcode.com/2025/day/4/input";
