@@ -1,13 +1,25 @@
+use crate::input::get_input;
+use crate::day_4::solve_day_4;
+use crate::day_3::solve_day_3;
+use crate::day_2::solve_day_2;
+use crate::day_1::solve_day_1;
 mod input;
-mod day_5;
 mod day_4;
 mod day_3;
 mod day_2;
 mod day_1;
-use crate::input::solve;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let day = std::env::args().nth(1).expect("Usage: cargo run -- <day>");
-    solve(day).unwrap();
+    let input = get_input(&day)?;
+    match day.as_str() {
+        "1" => solve_day_1(input),
+        "2" => solve_day_2(input),
+        "3" => solve_day_3(input),
+        "4" => solve_day_4(input),
+        _ => {
+            println!("Day {} not implemented", day);
+        }
+    }; 
     Ok(())
 }

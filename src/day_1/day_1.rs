@@ -1,6 +1,6 @@
 use crate::day_1::dial::Dial;
 
-pub fn solve_day_1(input: Vec<String>) -> Result<u32, Box<dyn std::error::Error>> {
+pub fn solve_day_1(input: Vec<String>) {
     let mut dial = Dial { value: 50, password:0 };
 
     for rot in &input {
@@ -11,6 +11,5 @@ pub fn solve_day_1(input: Vec<String>) -> Result<u32, Box<dyn std::error::Error>
         // println!("{:?} | {:?}", dial, rot);
     }
     println!("password = {:?}", dial.password);
-    Ok(dial.password)
 }
 
