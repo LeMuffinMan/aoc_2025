@@ -1,8 +1,4 @@
 
-use std::env;
-use reqwest::blocking::Client;
-use std::error::Error;
-
 fn get_adjacent_cells(map: &Vec<String>, x: usize, y: usize) -> Vec<char> {
     let mut vec = Vec::new();
     
@@ -51,9 +47,8 @@ fn is_accessible_roll(map: &Vec<String>, x: usize, y: usize) -> usize {
     return 0;
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+pub fn part_1(input: &mut Vec<String>) -> u64 {
     let mut count = 0;
-    let input = get_input()?;
     // let input: Vec<String> = vec![
     //     "..@@.@@@@.",
     //     "@@@.@.@.@@",
@@ -73,32 +68,13 @@ fn main() -> Result<(), Box<dyn Error>> {
         let line = input[i].as_bytes();
         for j in 0..line.len() {
             match line[j] as char {
-                '@' => count += is_accessible_roll(&input, i, j),
+                '@' => count += is_accessible_roll(input, i, j),
                 _ => continue,
             };
         }
-        println!("{:?}", input[i]);
+        // println!("{:?}", input[i]);
     }
-    println!("Password = {count}");
-
-    Ok(())
-}
-
-fn get_input() -> Result<Vec<String>, Box<dyn Error>> {
-    dotenv::from_path("../.env").ok();
-    let session_cookie = env::var("AOC_SESSION")?;
-
-    let url = "https://adventofcode.com/2025/day/4/input";
-
-    let client = Client::new();
-    let response = client
-        .get(url)
-        .header("Cookie", format!("session={}", session_cookie))
-        .send()?
-        .text()?;
-
-    let lines: Vec<String> = response.lines().map(|l| l.to_string()).collect();
-
-    Ok(lines)
+    // println!("Password = {count}");
+    count as u64
 }
 

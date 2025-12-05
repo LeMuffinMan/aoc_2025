@@ -1,8 +1,4 @@
 
-use std::env;
-use reqwest::blocking::Client;
-use std::error::Error;
-
 fn get_number(bank: &Vec<u32>, indexes: (usize, usize, usize)) -> u64 {
     let mut res: u64 = 0;
     let first = indexes.0;
@@ -12,6 +8,7 @@ fn get_number(bank: &Vec<u32>, indexes: (usize, usize, usize)) -> u64 {
         if i == first || i == second || i == third {
             continue;
         }
+        println!("Bank = {:?} | res = {res}", bank);
         res = res * 10;
         res += *n as u64;
     }
@@ -31,13 +28,13 @@ fn get_max_joltage(bank: &Vec<u32>) -> u64 {
             }
         }
     }
-    println!("Bank = {:?} | res = {max}", bank);
+    println!("Bank = {:?} | max = {max}", bank);
     max
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+pub fn part_2(input: &Vec<String>) -> u64 {
     let mut count = 0;
-    let input = get_input()?;
+    println!("Banks = {:?}", input);
     // let input = vec!["987654321111111", "811111111111119", "234234234234278", "818181911112111"];
     for l in input {
         let mut bank = Vec::<u32>::new();
@@ -46,25 +43,6 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
         count += get_max_joltage(&bank);
     }
-    println!("password = {count}");
-    Ok(())
-}
-
-fn get_input() -> Result<Vec<String>, Box<dyn Error>> {
-    dotenv::from_path("../../.env").ok();
-    let session_cookie = env::var("AOC_SESSION")?;
-
-    let url = "https://adventofcode.com/2025/day/3/input";
-
-    let client = Client::new();
-    let response = client
-        .get(url)
-        .header("Cookie", format!("session={}", session_cookie))
-        .send()?
-        .text()?;
-
-    let lines: Vec<String> = response.lines().map(|l| l.to_string()).collect();
-
-    Ok(lines)
+    count as u64
 }
 
