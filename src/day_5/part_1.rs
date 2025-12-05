@@ -19,14 +19,15 @@ fn count_fresh_ingredients(ranges: &Vec<String>, ing: String) -> bool {
     let ing_len = ing.len();
     let low_len = low.len();
     let high_len = high.len();
+    println!("ing = {ing} | low = {low} | high = {high}");
     if ing_len < low_len || ing_len < high_len {
       return false;
     }
     if ing_len == low_len {
-      return *ing < *low;
+        let ing = ing.as_ptr();
+        let low = low.as_ptr();
     }
     else if ing_len == high_len {
-      return *ing > *low
     }
     println!("unreachable");
   }
@@ -54,7 +55,7 @@ pub fn part_1(mut input: &mut Vec<String>) -> u64 {
   }
   for ing in ingredients {
     // println!("Ing = {ing}");
-    if count_fresh_ingredients(&ranges, ing) {
+    if !count_fresh_ingredients(&ranges, ing) {
       count += 1;
     };
   }
