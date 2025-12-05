@@ -1,6 +1,7 @@
 use crate::day_4::solve_day_4;
 use crate::day_3::solve_day_3;
 use crate::day_2::solve_day_2;
+use crate::day_5::solve_day_5;
 use crate::day_1::solve_day_1;
 use std::error::Error;
 use std::env;
@@ -13,6 +14,7 @@ pub fn solve(day: String) -> Result<u32, Box<dyn std::error::Error>> {
         "2" => solve_day_2(input),
         "3" => solve_day_3(input),
         "4" => solve_day_4(input),
+        "5" => solve_day_5(input),
         _ => {
             println!("Day {} not implemented", day);
             Ok(0)
