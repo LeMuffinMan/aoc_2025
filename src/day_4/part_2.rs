@@ -1,8 +1,4 @@
 
-use std::env;
-use reqwest::blocking::Client;
-use std::error::Error;
-
 fn get_adjacent_cells(map: &Vec<String>, x: usize, y: usize) -> Vec<char> {
     let mut vec = Vec::new();
     
@@ -51,7 +47,7 @@ fn is_accessible_roll(map: &Vec<String>, x: usize, y: usize) -> Option<(usize, u
     return None;
 }
 
-fn remove_rolls(map: &mut Vec<String>, cells: & mut Vec<(usize, usize)>) -> (usize, Vec<String>) {
+fn remove_rolls(map: & Vec<String>, cells: & mut Vec<(usize, usize)>) -> (usize, Vec<String>) {
     let mut count = 0;
     let mut new_map = Vec::new();
     for (i, line) in map.iter().enumerate() {
@@ -74,10 +70,9 @@ fn remove_rolls(map: &mut Vec<String>, cells: & mut Vec<(usize, usize)>) -> (usi
     (count, new_map)
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+pub fn part_2(input: &mut Vec<String>) -> u64 {
     let mut count = 0;
     let mut removable = Vec::new();
-    let mut input = get_input()?;
     // let mut input: Vec<String> = vec![
     //     "..@@.@@@@.",
     //     "@@@.@.@.@@",
@@ -111,31 +106,11 @@ fn main() -> Result<(), Box<dyn Error>> {
         if removable.is_empty() {
             break;
         }
-        let (removed, new_map) = remove_rolls(&mut input, &mut removable);
-        input = new_map;
+        let (removed, new_map) = remove_rolls(input, &mut removable);
+        *input = new_map;
         count += removed;
         removable.clear();
     }
-    println!("Password = {count}");
-
-    Ok(())
-}
-
-fn get_input() -> Result<Vec<String>, Box<dyn Error>> {
-    dotenv::from_path("../../.env").ok();
-    let session_cookie = env::var("AOC_SESSION")?;
-
-    let url = "https://adventofcode.com/2025/day/4/input";
-
-    let client = Client::new();
-    let response = client
-        .get(url)
-        .header("Cookie", format!("session={}", session_cookie))
-        .send()?
-        .text()?;
-
-    let lines: Vec<String> = response.lines().map(|l| l.to_string()).collect();
-
-    Ok(lines)
+    count as u64
 }
 

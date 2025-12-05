@@ -1,8 +1,4 @@
 
-use std::env;
-use reqwest::blocking::Client;
-use std::error::Error;
-
 fn seek_sequence(str: &String, size: usize) -> u64 { 
     let len = str.len();
     let chunk = len / size;
@@ -41,33 +37,16 @@ fn find_invalids_ids(range: &str) -> u64 {
     ret
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
-    let input = get_input()?;
+pub fn solve_part_2(input : &Vec<String>) -> u64 {
     let mut count = 0;
     // let input = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124";
-    let sequences = input.split(','); 
-    for range in sequences {
-        println!("\nTesting range : {range}");
-        count += find_invalids_ids(range);
+    for line in input {
+        for range in line.split(',') {
+            println!("\nTesting range : {range}");
+            count += find_invalids_ids(range);
+        }
     }
     println!("passsword = {count}");
-    Ok(())
-}
-
-fn get_input() -> Result<String, Box<dyn Error>> {
-    dotenv::from_path("../../.env").ok();
-    let session_cookie = env::var("AOC_SESSION")?;
-
-    let url = "https://adventofcode.com/2025/day/2/input";
-
-    let client = Client::new();
-    let response = client
-        .get(url)
-        .header("Cookie", format!("session={}", session_cookie))
-        .send()?
-        .text()?;
-
-    let line = response.trim().to_string();
-    Ok(line)
+    count
 }
 
