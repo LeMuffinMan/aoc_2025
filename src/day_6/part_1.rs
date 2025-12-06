@@ -1,5 +1,4 @@
 
-// 6605396225326 -> too high
 
 pub fn part_1(input: &Vec<String>) -> u64 {
   let mut count = 0;
@@ -15,6 +14,7 @@ pub fn part_1(input: &Vec<String>) -> u64 {
     println!("worksheet[{count}] = {:?}", worksheet[count]);
     count += 1;
   }
+  count = 0;
   println!("Operation= {:?}", ops);
   for (i, op) in ops.iter().enumerate() {
     let mut numbers = Vec::new();
