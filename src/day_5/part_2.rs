@@ -33,8 +33,8 @@ pub fn part_2(input: &Vec<String>) -> u64 {
     let mut pair = range.split('-');
     pair.next().unwrap().parse::<u64>().unwrap()
   });
-  for l in &ranges {
-    println!("{l}");
-  }
+  // for l in &ranges {
+  //   println!("{l}");
+  // }
   get_fresh_IDs(ranges)
 }
