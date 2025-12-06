@@ -1,5 +1,5 @@
 
-fn get_fresh_IDs(ranges: Vec<String>) -> u64 {
+fn get_fresh_ids(ranges: Vec<String>) -> u64 {
   let mut count = 0;
   let mut max = 0;
   for range in ranges {
@@ -36,5 +36,5 @@ pub fn part_2(input: &Vec<String>) -> u64 {
   // for l in &ranges {
   //   println!("{l}");
   // }
-  get_fresh_IDs(ranges)
+  get_fresh_ids(ranges)
 }
