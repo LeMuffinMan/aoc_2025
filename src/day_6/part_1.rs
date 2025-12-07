@@ -1,7 +1,6 @@
 
 
 pub fn part_1(input: &Vec<String>) -> u64 {
-  let mut count = 0;
   let mut worksheet : Vec<Vec<u64>> = Vec::new(); 
   let mut ops : Vec<char> = Vec::new();
   for line in input {
@@ -10,9 +9,8 @@ pub fn part_1(input: &Vec<String>) -> u64 {
       break;
     }
     worksheet.push(line.split_whitespace().map(|v| v.parse::<u64>().unwrap()).collect());
-    count += 1;
   }
-  count = 0;
+  let mut count = 0;
   for (i, op) in ops.iter().enumerate() {
     let mut numbers = Vec::new();
     for row in &worksheet {

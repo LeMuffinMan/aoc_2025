@@ -1,4 +1,5 @@
 use crate::input::get_input;
+use crate::day_7::solve_day_7;
 use crate::day_6::solve_day_6;
 use crate::day_5::solve_day_5;
 use crate::day_4::solve_day_4;
@@ -6,6 +7,7 @@ use crate::day_3::solve_day_3;
 use crate::day_2::solve_day_2;
 use crate::day_1::solve_day_1;
 mod input;
+mod day_7;
 mod day_6;
 mod day_5;
 mod day_4;
@@ -23,6 +25,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "4" => solve_day_4(input),
         "5" => solve_day_5(input),
         "6" => solve_day_6(input),
+        "7" => solve_day_7(input),
         _ => {
             println!("Day {} not implemented", day);
         }
