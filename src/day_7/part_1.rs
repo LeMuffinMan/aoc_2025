@@ -22,11 +22,11 @@ fn draw_beams(map: &mut Vec<Vec<char>>, x: usize, y: usize) -> u64 {
   count
 }
 
-fn print_map(map: &Vec<Vec<char>>) {
-  map.clone().into_iter()
-      .map(|l| l.into_iter().collect::<String>())
-      .for_each(|s| println!("{}", s));
-}
+// fn print_map(map: &Vec<Vec<char>>) {
+//   map.clone().into_iter()
+//       .map(|l| l.into_iter().collect::<String>())
+//       .for_each(|s| println!("{}", s));
+// }
 
 
 pub fn part_1(input: &Vec<String>) -> u64 {
