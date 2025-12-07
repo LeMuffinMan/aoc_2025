@@ -1,4 +1,3 @@
-
 fn get_max_joltage(bank: &String) -> u64 {
     let digits: Vec<char> = bank.chars().collect();
     let k = 12;
@@ -20,4 +19,3 @@ fn get_max_joltage(bank: &String) -> u64 {
 pub fn part_2(input: &Vec<String>) -> u64 {
     input.iter().map(|bank| get_max_joltage(bank)).sum()
 }
-

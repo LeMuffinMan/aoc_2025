@@ -1,7 +1,6 @@
-
 fn get_adjacent_cells(map: &Vec<String>, x: usize, y: usize) -> Vec<char> {
     let mut vec = Vec::new();
-    
+
     if x > 0 {
         let line = map[x - 1].as_bytes();
         vec.push(line[y] as char);
@@ -63,7 +62,7 @@ pub fn part_1(input: &mut Vec<String>) -> u64 {
     //     ]
     //     .into_iter()
     //     .map(|s| s.to_string())
-    //     .collect(); 
+    //     .collect();
     for i in 0..input.len() {
         let line = input[i].as_bytes();
         for j in 0..line.len() {
@@ -77,4 +76,3 @@ pub fn part_1(input: &mut Vec<String>) -> u64 {
     // println!("Password = {count}");
     count as u64
 }
-

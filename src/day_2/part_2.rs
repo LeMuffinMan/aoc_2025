@@ -1,5 +1,4 @@
-
-fn seek_sequence(str: &String, size: usize) -> u64 { 
+fn seek_sequence(str: &String, size: usize) -> u64 {
     let len = str.len();
     let chunk = len / size;
     let vec: Vec<char> = str.chars().collect();
@@ -7,11 +6,11 @@ fn seek_sequence(str: &String, size: usize) -> u64 {
         .chunks(chunk)
         .map(|c| c.iter().collect::<String>())
         .collect::<Vec<String>>();
-    
+
     if seq.first().map(|f| seq.iter().all(|n| n == f)).unwrap() {
         println!("{str} Invalid: ({:?} {size})", seq);
         return str.parse().unwrap();
-    } 
+    }
 
     return 0;
 }
@@ -33,11 +32,11 @@ fn find_invalids_ids(range: &str) -> u64 {
                 size += 1;
             }
         }
-    } 
+    }
     ret
 }
 
-pub fn part_2(input : &Vec<String>) -> u64 {
+pub fn part_2(input: &Vec<String>) -> u64 {
     let mut count = 0;
     // let input = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124";
     for line in input {
@@ -49,4 +48,3 @@ pub fn part_2(input : &Vec<String>) -> u64 {
     println!("passsword = {count}");
     count
 }
-

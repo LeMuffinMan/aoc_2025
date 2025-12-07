@@ -1,4 +1,3 @@
-
 fn get_max_index(vec: &Vec<u32>, start: usize, end: usize) -> usize {
     let mut max = 0;
     let mut max_i = 0;
@@ -29,4 +28,3 @@ pub fn part_1(input: &Vec<String>) -> u64 {
     }
     count as u64
 }
-

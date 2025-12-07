@@ -1,6 +1,6 @@
-use std::error::Error;
-use std::env;
 use reqwest::blocking::Client;
+use std::env;
+use std::error::Error;
 
 pub fn get_input(day: &String) -> Result<Vec<String>, Box<dyn Error>> {
     dotenv::from_path(".env").ok();

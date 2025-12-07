@@ -1,7 +1,6 @@
-
 fn get_adjacent_cells(map: &Vec<String>, x: usize, y: usize) -> Vec<char> {
     let mut vec = Vec::new();
-    
+
     if x > 0 {
         let line = map[x - 1].as_bytes();
         vec.push(line[y] as char);
@@ -47,7 +46,7 @@ fn is_accessible_roll(map: &Vec<String>, x: usize, y: usize) -> Option<(usize, u
     return None;
 }
 
-fn remove_rolls(map: & Vec<String>, cells: & mut Vec<(usize, usize)>) -> (usize, Vec<String>) {
+fn remove_rolls(map: &Vec<String>, cells: &mut Vec<(usize, usize)>) -> (usize, Vec<String>) {
     let mut count = 0;
     let mut new_map = Vec::new();
     for (i, line) in map.iter().enumerate() {
@@ -61,7 +60,7 @@ fn remove_rolls(map: & Vec<String>, cells: & mut Vec<(usize, usize)>) -> (usize,
                     } else {
                         new_line.push('@');
                     }
-                },
+                }
                 _ => new_line.push(ch),
             }
         }
@@ -87,18 +86,18 @@ pub fn part_2(input: &mut Vec<String>) -> u64 {
     //     ]
     //     .into_iter()
     //     .map(|s| s.to_string())
-    //     .collect(); 
+    //     .collect();
 
     loop {
         for i in 0..input.len() {
-            let line= input[i].as_bytes();
+            let line = input[i].as_bytes();
             for j in 0..line.len() {
                 match line[j] as char {
                     '@' => {
                         if let Some(cells) = is_accessible_roll(&input, i, j) {
                             removable.push(cells);
                         }
-                    },
+                    }
                     _ => continue,
                 };
             }
@@ -113,4 +112,3 @@ pub fn part_2(input: &mut Vec<String>) -> u64 {
     }
     count as u64
 }
-
