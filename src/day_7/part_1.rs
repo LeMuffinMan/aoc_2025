@@ -4,7 +4,7 @@ fn draw_beams(map: &mut Vec<Vec<char>>, x: usize, y: usize) -> u64 {
   if x > map.len() - 1 {
     return 0;
   }
-  if y < 0 || y > map[x].len() {
+  if y > map[x].len() {
     return 0;
   }
   match map[x][y] {
@@ -31,9 +31,6 @@ fn print_map(map: &Vec<Vec<char>>) {
 
 pub fn part_1(input: &Vec<String>) -> u64 {
   let mut count = 0;
-  let mut map: Vec<Vec<char>> = Vec::new();
-  let mut x = 0;
-
   let mut map = input
     .into_iter()
     .map(|l| l.chars().collect::<Vec<char>>())
