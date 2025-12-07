@@ -1,11 +1,70 @@
 
-#[allow(dead_code)]
-#[allow(unused_variables)]
-pub fn part_2(input: &Vec<String>) -> u64 {
+fn draw_beams(map: &mut Vec<Vec<char>>, x: usize, y: usize) -> u64 {
   let mut count = 0;
-  for line in input {
-    // println!("#{count} {line}");
-    count += 1;
+  if x > map.len() - 1 {
+    return 0;
+  }
+  if y < 0 || y > map[x].len() {
+    return 0;
+  }
+  match map[x][y] {
+    '.' => {
+      map[x][y] = '|';
+      count += draw_beams(map, x + 1, y);
+    },
+    '^' => {
+      if x < map.len() {
+        count += 2;
+      }
+      count += draw_beams(map, x, y - 1);
+      count += draw_beams(map, x, y + 1);
+    },
+    _ => {},
+  }
+  count
+}
+
+fn print_map(map: &Vec<Vec<char>>) {
+  map.clone().into_iter()
+      .map(|l| l.into_iter().collect::<String>())
+      .for_each(|s| println!("{}", s));
+}
+
+
+pub fn part_2(input: &Vec<String>) -> u64 {
+  let input: Vec<String> = vec![
+      ".......S.......".to_string(),
+      "...............".to_string(),
+      ".......^.......".to_string(),
+      "...............".to_string(),
+      "......^.^......".to_string(),
+      "...............".to_string(),
+      ".....^.^.^.....".to_string(),
+      "...............".to_string(),
+      "....^.^...^....".to_string(),
+      "...............".to_string(),
+      "...^.^...^.^...".to_string(),
+      "...............".to_string(),
+      "..^...^.....^..".to_string(),
+      "...............".to_string(),
+      ".^.^.^.^.^...^.".to_string(),
+      "...............".to_string(),
+  ];
+  let mut count = 0;
+  let mut map: Vec<Vec<char>> = Vec::new();
+  let mut x = 0;
+
+  let mut map = input
+    .into_iter()
+    .map(|l| l.chars().collect::<Vec<char>>())
+    .collect::<Vec<Vec<char>>>();
+
+  for x in 0..map.len() {
+    for y in 0..map[x].len() {
+      if map[x][y] == 'S' {
+        count += draw_beams(&mut map, x + 1, y);
+      }
+    }
   }
   count
 }
