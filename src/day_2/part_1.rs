@@ -1,4 +1,3 @@
-
 fn find_invalids_ids(range: &str, count: &mut u64) -> u64 {
     if let Some((low, high)) = range.split_once('-') {
         println!("splitted = {low} {high}");
@@ -7,7 +6,7 @@ fn find_invalids_ids(range: &str, count: &mut u64) -> u64 {
         for n in num_low..=num_high {
             let n_str = n.to_string();
             if n_str.len() % 2 == 0 {
-                let (left, right) = n_str.split_at(n_str.len() / 2);  
+                let (left, right) = n_str.split_at(n_str.len() / 2);
                 if left == right {
                     println!("INVALID : {n}");
                     *count += n;
@@ -18,7 +17,7 @@ fn find_invalids_ids(range: &str, count: &mut u64) -> u64 {
                 println!("Valid : {n}");
             }
         }
-    } 
+    }
     *count
 }
 
@@ -34,4 +33,3 @@ pub fn part_1(input: &Vec<String>) -> u64 {
     println!("passsword = {count}");
     count
 }
-

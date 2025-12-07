@@ -1,4 +1,3 @@
-
 #[derive(Debug)]
 pub struct Dial {
     pub value: i32,
@@ -14,7 +13,9 @@ impl Dial {
                 _ => unreachable!(),
             };
             clicks -= 1;
-            if clicks == 0 { break };
+            if clicks == 0 {
+                break;
+            };
         }
     }
     pub fn turn_left(&mut self) {

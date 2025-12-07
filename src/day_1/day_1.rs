@@ -1,7 +1,10 @@
 use crate::day_1::dial::Dial;
 
 pub fn solve_day_1(input: Vec<String>) {
-    let mut dial = Dial { value: 50, password:0 };
+    let mut dial = Dial {
+        value: 50,
+        password: 0,
+    };
 
     for rot in &input {
         let (dir_char, clicks) = rot.split_at(1);
@@ -12,4 +15,3 @@ pub fn solve_day_1(input: Vec<String>) {
     }
     println!("password = {:?}", dial.password);
 }
-
