@@ -21,6 +21,27 @@ impl JunctionBoxe {
         let dz = self.z - other.z;
         (dx * dx + dy * dy + dz * dz).sqrt()
     }
+
+    pub fn get_closest(boxes: &[Self], last_dist: f64) -> Option<(usize, usize, f64)> {
+        let mut min = f64::MAX;
+        let mut pair: Option<(usize, usize, f64)> = None;
+
+        // println!("last dist = {last_dist}");
+        for i in 0..boxes.len() {
+            for j in 0..boxes.len() {
+                if boxes[i] != boxes[j] {
+                    let dist = boxes[i].distance(&boxes[j]);
+                    if dist < min && dist > last_dist {
+                        // println!("dist = {dist}");
+                        min = dist;
+                        pair = Some((i, j, dist));
+                    }
+                }
+            }
+        }
+        pair
+    }
+
     pub fn connect_boxes(
         boxes: &mut [Self],
         i: usize,
@@ -186,25 +207,5 @@ impl JunctionBoxe {
             0 => 1,
             _ => count,
         }
-    }
-
-    pub fn get_closest(boxes: &[Self], last_dist: f64) -> Option<(usize, usize, f64)> {
-        let mut min = f64::MAX;
-        let mut pair: Option<(usize, usize, f64)> = None;
-
-        // println!("last dist = {last_dist}");
-        for i in 0..boxes.len() {
-            for j in 0..boxes.len() {
-                if boxes[i] != boxes[j] {
-                    let dist = boxes[i].distance(&boxes[j]);
-                    if dist < min && dist > last_dist {
-                        // println!("dist = {dist}");
-                        min = dist;
-                        pair = Some((i, j, dist));
-                    }
-                }
-            }
-        }
-        pair
     }
 }
