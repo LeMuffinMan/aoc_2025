@@ -1,44 +1,68 @@
-#[allow(dead_code)]
-#[allow(unused_variables)]
-pub fn part_2(input: &Vec<String>) -> u64 {
-    // let mut index = input[0].len() - 1;
-    let mut op = Vec::new();
-    for index in (0..input[0].len() - 1).rev() {
-        for line in input {
-            if line.find('+').is_some() || line.find('*').is_some() {
-                break;
-            }
-            op.push(line.chars().nth(index).unwrap());
+fn get_column(map: &Vec<Vec<char>>, y: usize) -> (Vec<char>, Option<char>) {
+    let mut number = Vec::new();
+    for x in 0..map.len() {
+        match map[x][y] {
+            '*' | '+' => return (number, Some(map[x][y])),
+            ' ' => continue,
+            _ => number.push(map[x][y]),
         }
-        //ici on cherche l'operateur
     }
-    for line in input {}
+    (number, None)
+}
 
-    let mut worksheet: Vec<Vec<u64>> = Vec::new();
-    let mut ops: Vec<char> = Vec::new();
-    for line in input {
-        if line.find('+').is_some() || line.find('*').is_some() {
-            ops.extend(line.chars().filter(|&c| c == '+' || c == '*'));
-            break;
+fn get_problem(map: &Vec<Vec<char>>, y: &mut usize) -> (Vec<Vec<char>>, char) {
+    let mut digits: Vec<Vec<char>> = Vec::new();
+    loop {
+        let (number, op) = get_column(&map, *y);
+        digits.push(number);
+        match op {
+            Some(op) => return (digits, op),
+            _ => *y -= 1,
         }
-        worksheet.push(
-            line.split_whitespace()
-                .map(|v| v.parse::<u64>().unwrap())
-                .collect(),
-        );
     }
-    let mut count = 0;
-    for (i, op) in ops.iter().enumerate() {
-        let mut numbers = Vec::new();
-        for row in &worksheet {
-            numbers.push(row[i]);
-        }
-        let res = match op {
-            '+' => numbers.iter().sum(),
-            '*' => numbers.iter().product::<u64>(),
-            _ => unreachable!(),
+}
+
+fn product(problem: Vec<Vec<char>>) -> u64 {
+    problem
+        .into_iter()
+        .map(|digits| {
+            digits
+                .into_iter()
+                .collect::<String>()
+                .parse::<u64>()
+                .unwrap()
+        })
+        .product()
+}
+
+fn sum(problem: Vec<Vec<char>>) -> u64 {
+    problem
+        .into_iter()
+        .map(|digits| {
+            digits
+                .into_iter()
+                .collect::<String>()
+                .parse::<u64>()
+                .unwrap()
+        })
+        .sum()
+}
+
+pub fn part_2(input: &Vec<String>) -> u64 {
+    let map: Vec<Vec<char>> = input.iter().map(|l| l.chars().collect()).collect();
+    let mut res = 0;
+    let mut y = map[0].len() - 1;
+    loop {
+        let (problem, op) = get_problem(&map, &mut y);
+        res += match op {
+            '*' => product(problem),
+            '+' => sum(problem),
+            _ => unreachable!("Unexpected operator"),
         };
-        count += res as usize;
+        match y == 0 {
+            true => break,
+            false => y -= 2,
+        };
     }
-    count as u64
+    res
 }
