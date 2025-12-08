@@ -15,29 +15,25 @@ fn get_junction_boxes(input: &Vec<String>) -> Vec<JunctionBoxe> {
 }
 
 pub fn part_2(input: &Vec<String>) -> u64 {
-    let mut junction_boxes = get_junction_boxes(&input);
+    let mut boxes = get_junction_boxes(&input);
     let mut last_dist: f64 = 0.0;
     loop {
-        let circuits_count = JunctionBoxe::count_circuits(&junction_boxes);
-        if let Some((b1, b2, dist)) = JunctionBoxe::get_closest(&junction_boxes, last_dist) {
+        let circuits_count = JunctionBoxe::count_circuits(&boxes);
+        if let Some((b1, b2, dist)) = JunctionBoxe::get_closest(&boxes, last_dist) {
             println!(
                 "circuit count = {:} pair = ({:?} {:?}) ({:?} {:?}) dist = {dist}",
-                circuits_count,
-                junction_boxes[b1].x,
-                junction_boxes[b1].y,
-                junction_boxes[b2].x,
-                junction_boxes[b2].y
+                circuits_count, boxes[b1].x, boxes[b1].y, boxes[b2].x, boxes[b2].y
             );
             last_dist = dist;
-            match junction_boxes[b1].is_same_circuit(&junction_boxes[b2]) {
+            match boxes[b1].is_same_circuit(&boxes[b2]) {
                 false => {
-                    let mut last_circuit = JunctionBoxe::count_circuits(&junction_boxes);
+                    let mut last_circuit = JunctionBoxe::count_circuits(&boxes);
                     if let Some(res) =
-                        JunctionBoxe::connect_boxes(&mut junction_boxes, b1, b2, &mut last_circuit)
+                        JunctionBoxe::connect_boxes(&mut boxes, b1, b2, &mut last_circuit)
                     {
                         return res as u64;
                     }
-                    junction_boxes.sort_by_key(|boxe| boxe.circuit);
+                    boxes.sort_by_key(|boxe| boxe.circuit);
                 }
                 true => continue,
             }
