@@ -22,30 +22,20 @@ fn get_problem(map: &Vec<Vec<char>>, y: &mut usize) -> (Vec<Vec<char>>, char) {
     }
 }
 
-fn product(problem: Vec<Vec<char>>) -> u64 {
-    problem
+fn parse(digits: Vec<char>) -> u64 {
+    digits
         .into_iter()
-        .map(|digits| {
-            digits
-                .into_iter()
-                .collect::<String>()
-                .parse::<u64>()
-                .unwrap()
-        })
-        .product()
+        .collect::<String>()
+        .parse::<u64>()
+        .unwrap()
+}
+
+fn product(problem: Vec<Vec<char>>) -> u64 {
+    problem.into_iter().map(|digits| parse(digits)).product()
 }
 
 fn sum(problem: Vec<Vec<char>>) -> u64 {
-    problem
-        .into_iter()
-        .map(|digits| {
-            digits
-                .into_iter()
-                .collect::<String>()
-                .parse::<u64>()
-                .unwrap()
-        })
-        .sum()
+    problem.into_iter().map(|digits| parse(digits)).sum()
 }
 
 pub fn part_2(input: &Vec<String>) -> u64 {
