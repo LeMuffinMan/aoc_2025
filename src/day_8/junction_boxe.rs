@@ -4,7 +4,6 @@ pub struct JunctionBoxe {
     pub y: f64,
     pub z: f64,
     pub circuit: Option<usize>,
-    pub sorted: bool,
 }
 
 impl JunctionBoxe {
@@ -14,7 +13,6 @@ impl JunctionBoxe {
             y,
             z,
             circuit: None,
-            sorted: false,
         }
     }
     pub fn distance(&self, other: &Self) -> f64 {
@@ -28,7 +26,7 @@ impl JunctionBoxe {
         i: usize,
         j: usize,
         last_circuit: &mut usize,
-    ) {
+    ) -> Option<f64> {
         let (b1, b2) = {
             let (left, right) = boxes.split_at_mut(j.max(i));
             if i < j {
@@ -37,20 +35,24 @@ impl JunctionBoxe {
                 (&mut right[0], &mut left[j])
             }
         };
+        let res = b1.x * b2.x;
         match (b1.get_circuit(), b2.get_circuit()) {
             (None, None) => {
                 *last_circuit += 1;
                 b1.set_circuit(Some(*last_circuit));
                 b2.set_circuit(Some(*last_circuit));
-                // *unplugged_boxes -= 2;
-            },
+            }
             (id, None) | (None, id) => {
                 b1.set_circuit(id);
                 b2.set_circuit(id);
-                // *unplugged_boxes -= 1;
-            },
-            (Some(id1), Some(id2)) => JunctionBoxe::connect_networks(boxes, id1, id2), 
+            }
+            (Some(id1), Some(id2)) => JunctionBoxe::connect_networks(boxes, id1, id2),
         };
+        if JunctionBoxe::count_circuits(boxes) == 1 {
+            Some(res)
+        } else {
+            None
+        }
     }
 
     pub fn connect_networks(boxes: &mut [Self], id1: usize, id2: usize) {
@@ -97,7 +99,7 @@ impl JunctionBoxe {
         if let Some(boxe) = boxes.last() {
             match boxe.circuit {
                 Some(id) => id + count,
-                _ => 0
+                _ => 0,
             }
         } else {
             0
@@ -110,19 +112,18 @@ impl JunctionBoxe {
             for i in 0..boxes.len() {
                 if boxes[i].get_circuit() == Some(id) {
                     boxes[i].set_circuit(None);
-                    count += 1; 
+                    count += 1;
                 }
             }
-        } 
+        }
         count
     }
 
-    pub fn get_largest_id(boxes: & [Self]) -> usize {
+    pub fn get_largest_id(boxes: &[Self]) -> usize {
         let mut max = 0;
         let mut largest = 0;
-        let mut size = 0;
         for i in 1..JunctionBoxe::count_circuits(boxes) {
-            size = JunctionBoxe::get_circuit_size(boxes, i);
+            let size = JunctionBoxe::get_circuit_size(boxes, i);
             if max < size {
                 max = size;
                 largest = i;
@@ -130,10 +131,10 @@ impl JunctionBoxe {
         }
         largest
     }
-    
+
     pub fn product_top_3_circuit_size(boxes: &mut [Self]) -> usize {
         let mut res = 1;
-        for i in 0..3 {
+        for _ in 0..3 {
             let size = JunctionBoxe::remove_circuit(boxes, Self::get_largest_id(boxes));
             // println!("{i}'s biggest circruit size = {size}");
             res *= size;
@@ -141,6 +142,7 @@ impl JunctionBoxe {
         res
     }
 
+    #[allow(dead_code)]
     pub fn print_circuits(boxes: &mut [Self]) {
         for i in 1..JunctionBoxe::count_circuits(boxes) {
             let size = JunctionBoxe::get_circuit_size(boxes, i);
@@ -153,7 +155,7 @@ impl JunctionBoxe {
                         if i == 0 {
                             println!("{:?}", boxes[j]);
                         }
-                    },
+                    }
                     Some(id) => {
                         if id == i {
                             println!("{:?}", boxes[j]);
@@ -172,12 +174,12 @@ impl JunctionBoxe {
                     if id == 0 {
                         count += 1;
                     }
-                },
+                }
                 Some(boxe_id) => {
                     if boxe_id == id {
                         count += 1;
-                    } 
-                },
+                    }
+                }
             }
         }
         match count {
@@ -193,7 +195,7 @@ impl JunctionBoxe {
         // println!("last dist = {last_dist}");
         for i in 0..boxes.len() {
             for j in 0..boxes.len() {
-                if boxes[i] != boxes[j] /* && !(boxes[i].is_plugged() && boxes[j].is_plugged()) */ /* && !boxes[i].is_same_circuit(&boxes[j] )*/ {
+                if boxes[i] != boxes[j] {
                     let dist = boxes[i].distance(&boxes[j]);
                     if dist < min && dist > last_dist {
                         // println!("dist = {dist}");
@@ -205,20 +207,4 @@ impl JunctionBoxe {
         }
         pair
     }
-
-    // pub fn connect_closest(boxes: &mut [Self], pair: Option<usize, usize>) -> bool {
-    //
-    //     if let Some((i, j)) = pair {
-    //         let (b1, b2) = {
-    //             let (left, right) = boxes.split_at_mut(j);
-    //             (&mut left[i], &mut right[0])
-    //         };
-    //         // println!("Connected boxes {:?} {:?}", b1, b2);
-    //         JunctionBoxe::connect_boxes(boxes, i, j, last_circuit, unplugged);
-    //         // b1.connect_boxes(b2, last_circuit, unplugged);
-    //         true
-    //     } else {
-    //         false
-    //     }
-    // }
 }
