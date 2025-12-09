@@ -7,6 +7,7 @@ use crate::day_6::solve_day_6;
 use crate::day_7::solve_day_7;
 use crate::day_8::solve_day_8;
 use crate::input::get_input;
+use crate::day_9::solve_day_9;
 mod day_1;
 mod day_2;
 mod day_3;
@@ -16,6 +17,7 @@ mod day_6;
 mod day_7;
 mod day_8;
 mod input;
+mod day_9;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let day = std::env::args().nth(1).expect("Usage: cargo run -- <day>");
@@ -29,6 +31,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "6" => solve_day_6(input),
         "7" => solve_day_7(input),
         "8" => solve_day_8(input),
+        "9" => solve_day_9(input),
         _ => {
             println!("Day {} not implemented", day);
         }
