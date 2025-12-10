@@ -29,5 +29,6 @@ else
   DAY=$1
 fi
 
+# cargo build --release
 cargo run -- $DAY
 
