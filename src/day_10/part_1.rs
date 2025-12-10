@@ -20,7 +20,6 @@ fn parse(input: &Vec<String>) -> (Vec<&str>, Vec<&str>) {
 fn get_presses(lights: &str, buttons: &str) -> u64 {
   let mut lights_target = Vec::new();
   let mut buttons_grid = Vec::new();
-  let mut presses = 0;
   for c in lights.chars() {
     match c {
       '.' => lights_target.push(false),
@@ -35,7 +34,22 @@ fn get_presses(lights: &str, buttons: &str) -> u64 {
   for b in buttons_grid {
     println!("buttons_grid = {:?}", b);
   }
+  let mut presses = 0;
+  while !res {
+      res = try_presses(&lights, &lights_target, &buttons_grid, &mut presses);
+  }
   presses
+}
+
+fn try_presses(lights: &str, lights_target: &str, buttons_grid: &Vec<&str>, &mut presses: usize) {
+    while presses > 0 {
+        lights = switch_lights(buttons_grid, &presses);
+        if lights == lights_target {
+            return true;
+        }
+        presses -= 1;
+    }
+    false
 }
 
 pub fn part_1(input: &Vec<String>) -> u64 {
