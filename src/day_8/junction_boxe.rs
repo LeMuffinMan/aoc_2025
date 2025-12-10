@@ -19,7 +19,7 @@ impl JunctionBoxe {
         let dx = self.x - other.x;
         let dy = self.y - other.y;
         let dz = self.z - other.z;
-        (dx * dx + dy * dy + dz * dz).sqrt()
+        dx * dx + dy * dy + dz * dz
     }
 
     pub fn get_closest(boxes: &[Self], last_dist: f64) -> Option<(usize, usize, f64)> {

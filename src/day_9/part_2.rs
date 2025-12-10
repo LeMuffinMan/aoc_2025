@@ -84,16 +84,20 @@ fn get_dot_map(tiles: &Vec<(f64, f64)>) -> Vec<Vec<char>> {
 }
 
 pub fn part_2(input: &Vec<String>) -> u64 {
-  let input = vec![
-    "7,1".to_string(),
-    "11,1".to_string(),
-    "11,7".to_string(),
-    "9,7".to_string(),
-    "9,5".to_string(),
-    "2,5".to_string(),
-    "2,3".to_string(),
-    "7,3".to_string(),
-  ];
+  // let input = vec![
+  //   "7,1".to_string(),
+  //   "11,1".to_string(),
+  //   "11,7".to_string(),
+  //   "9,7".to_string(),
+  //   "9,5".to_string(),
+  //   "2,5".to_string(),
+  //   "2,3".to_string(),
+  //   "7,3".to_string(),
+  // ];
+  for l in input {
+    println!("{:?}", l);
+  }
+  // return 42;
   let mut tiles: Vec<(f64, f64)> = Vec::new();
   for line in input {
     let coord: Vec<f64> = line.split(',').map(|coord| coord.parse::<f64>().unwrap())
@@ -101,7 +105,7 @@ pub fn part_2(input: &Vec<String>) -> u64 {
     let point = (coord[0], coord[1]);
     tiles.push(point);
   }
-  let mut dot_map = get_dot_map(&tiles);
+  let dot_map = get_dot_map(&tiles);
   for line in dot_map {
     println!("{:?}", line);
   }
