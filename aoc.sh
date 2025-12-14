@@ -22,7 +22,7 @@ if [ -z "$1" ]; then
 elif ! expr "$1" + 0 >/dev/null 2>&1; then
   echo "Usage: ./aoc <day>"
   exit 1
-elif [[ "$DAY" -gt 12 ]]; then
+elif [[ "$1" -gt 12 ]]; then
   echo "12 puzzles available in 2025"
   exit 1
 else
